@@ -6,12 +6,12 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="faketelemetry",
-    version="0.1.1",
+    version="0.1.2",
     description="Real-time Fake Telemetry Stream Generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Adam Billekvist",
-    author_email="adam.billeqvist@example.com",
+    author_email="adam.billeqvist@gmail.com",
     url="https://github.com/adkvi/faketelemetry",
     project_urls={
         "Documentation": "https://github.com/adkvi/faketelemetry#readme",

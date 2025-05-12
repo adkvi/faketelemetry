@@ -19,6 +19,22 @@
 - Multi-channel (parallel) telemetry generation
 - Well-tested and extensible
 
+## Quickstart
+
+Generate a sine wave stream in seconds:
+
+```python
+from faketelemetry import TelemetryGenerator, WaveformType
+
+gen = TelemetryGenerator(WaveformType.SINE)
+for ts, val in gen.stream(sampling_rate=1.0, duration=2):
+    print(ts, val)
+```
+
+## Requirements
+- Python 3.7 or newer
+- No external dependencies (pure Python)
+
 ## Example Usage
 
 ```python
@@ -83,6 +99,10 @@ Run all tests:
 ```sh
 python -m unittest discover -s tests
 ```
+
+## Support
+
+For questions or issues, please open a [GitHub Issue](https://github.com/adkvi/faketelemetry/issues).
 
 ## License
 MIT

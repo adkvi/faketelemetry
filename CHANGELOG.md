@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.2] - 2025-05-12
+### Changed
+- Enhanced README: added Quickstart, Requirements, Table of Contents, Contributing, and Support sections for improved user experience.
+- Updated author email to real address in setup.py.
+
 ## [0.1.1] - 2025-05-12
 ### Changed
 - Updated README with direct PyPI and GitHub links, clarified installation instructions, and improved documentation badges.
