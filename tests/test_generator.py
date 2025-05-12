@@ -1,27 +1,39 @@
 import unittest
 from datetime import datetime
-from faketelemetry import TelemetryGenerator, WaveformType, MultiChannelTelemetryGenerator
+from faketelemetry import (
+    TelemetryGenerator,
+    WaveformType,
+    MultiChannelTelemetryGenerator,
+)
 
 
 class TestTelemetryGenerator(unittest.TestCase):
     def test_sine_wave(self):
-        gen = TelemetryGenerator(WaveformType.SINE, frequency=1.0, amplitude=2.0, offset=1.0)
+        gen = TelemetryGenerator(
+            WaveformType.SINE, frequency=1.0, amplitude=2.0, offset=1.0
+        )
         value = gen.generate_point(0)
         self.assertAlmostEqual(value, 1.0)
         value = gen.generate_point(0.25)
         self.assertAlmostEqual(value, 3.0, places=1)
 
     def test_cosine_wave(self):
-        gen = TelemetryGenerator(WaveformType.COSINE, frequency=1.0, amplitude=1.0, offset=0.0)
+        gen = TelemetryGenerator(
+            WaveformType.COSINE, frequency=1.0, amplitude=1.0, offset=0.0
+        )
         value = gen.generate_point(0)
         self.assertAlmostEqual(value, 1.0)
 
     def test_square_wave(self):
-        gen = TelemetryGenerator(WaveformType.SQUARE, frequency=1.0, amplitude=1.0, offset=0.0)
+        gen = TelemetryGenerator(
+            WaveformType.SQUARE, frequency=1.0, amplitude=1.0, offset=0.0
+        )
         self.assertIn(gen.generate_point(0), [1.0, -1.0])
 
     def test_sawtooth_wave(self):
-        gen = TelemetryGenerator(WaveformType.SAWTOOTH, frequency=1.0, amplitude=1.0, offset=0.0)
+        gen = TelemetryGenerator(
+            WaveformType.SAWTOOTH, frequency=1.0, amplitude=1.0, offset=0.0
+        )
         value = gen.generate_point(0)
         self.assertAlmostEqual(value, 0.0)
 
@@ -39,14 +51,18 @@ class TestTelemetryGenerator(unittest.TestCase):
                 self.assertIsInstance(v[1], float)
 
     def test_triangle_wave(self):
-        gen = TelemetryGenerator(WaveformType.TRIANGLE, frequency=1.0, amplitude=1.0, offset=0.0)
+        gen = TelemetryGenerator(
+            WaveformType.TRIANGLE, frequency=1.0, amplitude=1.0, offset=0.0
+        )
         self.assertAlmostEqual(gen.generate_point(0), -1.0, places=1)
         self.assertAlmostEqual(gen.generate_point(0.25), 0.0, places=1)
         self.assertAlmostEqual(gen.generate_point(0.5), 1.0, places=1)
         self.assertAlmostEqual(gen.generate_point(0.75), 0.0, places=1)
 
     def test_pulse_wave(self):
-        gen = TelemetryGenerator(WaveformType.PULSE, frequency=1.0, amplitude=1.0, offset=0.0)
+        gen = TelemetryGenerator(
+            WaveformType.PULSE, frequency=1.0, amplitude=1.0, offset=0.0
+        )
         self.assertEqual(gen.generate_point(0), 1.0)
         self.assertEqual(gen.generate_point(0.11), 0.0)
         self.assertEqual(gen.generate_point(1.0), 1.0)

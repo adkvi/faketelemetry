@@ -35,7 +35,9 @@ class TelemetryGenerator:
         if amplitude < 0:
             raise ValueError("Amplitude must be non-negative.")
         if waveform == WaveformType.CUSTOM and not callable(custom_func):
-            raise ValueError("A callable custom_func must be provided for CUSTOM waveform.")
+            raise ValueError(
+                "A callable custom_func must be provided for CUSTOM waveform."
+            )
         self.waveform = waveform
         self.frequency = frequency
         self.amplitude = amplitude
@@ -50,17 +52,44 @@ class TelemetryGenerator:
         if t < 0:
             raise ValueError("Time t must be non-negative.")
         if self.waveform == WaveformType.SINE:
-            value = self.amplitude * math.sin(2 * math.pi * self.frequency * t) + self.offset
+            value = (
+                self.amplitude * math.sin(2 * math.pi * self.frequency * t)
+                + self.offset
+            )
         elif self.waveform == WaveformType.COSINE:
-            value = self.amplitude * math.cos(2 * math.pi * self.frequency * t) + self.offset
+            value = (
+                self.amplitude * math.cos(2 * math.pi * self.frequency * t)
+                + self.offset
+            )
         elif self.waveform == WaveformType.SQUARE:
-            value = self.amplitude * (1 if math.sin(2 * math.pi * self.frequency * t) >= 0 else -1) + self.offset
+            value = (
+                self.amplitude
+                * (1 if math.sin(2 * math.pi * self.frequency * t) >= 0 else -1)
+                + self.offset
+            )
         elif self.waveform == WaveformType.SAWTOOTH:
-            value = self.amplitude * (2 * (t * self.frequency - math.floor(0.5 + t * self.frequency))) + self.offset
+            value = (
+                self.amplitude
+                * (2 * (t * self.frequency - math.floor(0.5 + t * self.frequency)))
+                + self.offset
+            )
         elif self.waveform == WaveformType.TRIANGLE:
-            value = self.amplitude * (2 * abs(2 * (t * self.frequency - math.floor(t * self.frequency + 0.5))) - 1) + self.offset
+            value = (
+                self.amplitude
+                * (
+                    2
+                    * abs(
+                        2 * (t * self.frequency - math.floor(t * self.frequency + 0.5))
+                    )
+                    - 1
+                )
+                + self.offset
+            )
         elif self.waveform == WaveformType.PULSE:
-            value = self.amplitude * (1 if (t * self.frequency) % 1 < 0.1 else 0) + self.offset
+            value = (
+                self.amplitude * (1 if (t * self.frequency) % 1 < 0.1 else 0)
+                + self.offset
+            )
         elif self.waveform == WaveformType.RANDOM_NOISE:
             value = self.amplitude * random.gauss(0, 1) + self.offset
         elif self.waveform == WaveformType.CUSTOM:
@@ -73,7 +102,9 @@ class TelemetryGenerator:
             value = self.noise_injector.add_noise(value)
         return value
 
-    def stream(self, sampling_rate: float, duration: Optional[float] = None) -> Iterator[Tuple[datetime, float]]:
+    def stream(
+        self, sampling_rate: float, duration: Optional[float] = None
+    ) -> Iterator[Tuple[datetime, float]]:
         """
         Stream (datetime, value) tuples in real-time at the given sampling rate.
         """

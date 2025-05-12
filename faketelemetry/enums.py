@@ -1,9 +1,11 @@
 from enum import Enum
 
+
 class WaveformType(Enum):
     """
     Enumeration of supported waveform types for telemetry generation.
     """
+
     SINE = "sine"
     COSINE = "cosine"
     SQUARE = "square"
