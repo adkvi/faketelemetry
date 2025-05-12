@@ -1,9 +1,11 @@
 import random
 
+
 class NoiseInjector:
     """
     Injects Gaussian noise into a signal value.
     """
+
     def __init__(self, noise_level: float = 0.0):
         """
         :param noise_level: Standard deviation of the Gaussian noise.

@@ -6,10 +6,12 @@ from typing import Iterator, Tuple, Optional
 from .enums import WaveformType
 from .noise_injector import NoiseInjector
 
+
 class TelemetryGenerator:
     """
     Generates real-time telemetry data based on mathematical waveforms.
     """
+
     def __init__(
         self,
         waveform: WaveformType,

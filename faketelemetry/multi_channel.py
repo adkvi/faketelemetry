@@ -3,10 +3,12 @@ import time
 from typing import Optional
 from .telemetry_generator import TelemetryGenerator
 
+
 class MultiChannelTelemetryGenerator:
     """
     Generate multiple telemetry streams (channels) in parallel.
     """
+
     def __init__(self, generators: list[TelemetryGenerator]):
         """
         :param generators: List of TelemetryGenerator instances (one per channel)
