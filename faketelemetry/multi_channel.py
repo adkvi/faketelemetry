@@ -15,7 +15,7 @@ class MultiChannelTelemetryGenerator:
         """
         self.generators = generators
 
-    def stream(self, sampling_rate: float, duration: float = None):
+    def stream(self, sampling_rate: float, duration: Optional[float] = None):
         """
         Yield a dict of {channel_index: (datetime, value)} for each sample.
         """

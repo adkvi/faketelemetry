@@ -2,7 +2,7 @@ import math
 import time
 import random
 from datetime import datetime
-from typing import Iterator, Tuple, Optional
+from typing import Iterator, Tuple, Optional, Callable
 from .enums import WaveformType
 from .noise_injector import NoiseInjector
 
@@ -19,7 +19,7 @@ class TelemetryGenerator:
         amplitude: float = 1.0,
         offset: float = 0.0,
         noise_injector: Optional[NoiseInjector] = None,
-        custom_func: Optional[callable] = None,
+        custom_func: Optional[Callable[[float], float]] = None,
     ):
         """
         Initialize the telemetry generator.
