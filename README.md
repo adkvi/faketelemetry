@@ -6,6 +6,10 @@
 
 **A minimal Python package to generate real-time, timestamped fake telemetry streams for testing, simulation, and development.**
 
+## Links
+- 📦 [PyPI Project](https://pypi.org/project/faketelemetry/)
+- 🗂️ [GitHub Repository](https://github.com/adkvi/faketelemetry)
+
 ## Features
 - Sine, cosine, square, sawtooth, triangle, pulse, and random noise waveforms
 - Custom user-defined waveform support
@@ -54,7 +58,13 @@ print('Custom:', next(gen_custom.stream(1)))
 
 ## Installation
 
-Clone this repo and install locally:
+Install from PyPI:
+
+```sh
+pip install faketelemetry
+```
+
+Or clone this repo and install locally:
 
 ```sh
 pip install .
