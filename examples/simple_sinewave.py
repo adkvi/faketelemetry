@@ -1,14 +1,20 @@
-from faketelemetry import TelemetryGenerator, WaveformType, NoiseInjector, MultiChannelTelemetryGenerator
+from faketelemetry import (
+    TelemetryGenerator,
+    WaveformType,
+    NoiseInjector,
+    MultiChannelTelemetryGenerator,
+)
 
 if __name__ == "__main__":
     import time
+
     # Single channel with noise
     gen = TelemetryGenerator(
         waveform=WaveformType.SINE,
         frequency=1.0,
         amplitude=1.0,
         offset=0.0,
-        noise_injector=NoiseInjector(noise_level=0.2)
+        noise_injector=NoiseInjector(noise_level=0.2),
     )
     print("Single channel with noise:")
     for timestamp, value in gen.stream(sampling_rate=2.0, duration=3):
