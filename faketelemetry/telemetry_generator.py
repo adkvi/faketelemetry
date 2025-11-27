@@ -1,7 +1,7 @@
 import math
 import time
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Iterator, Tuple, Optional, Callable, List
 from .enums import WaveformType
 from .noise_injector import NoiseInjector
@@ -197,8 +197,6 @@ class TelemetryGenerator:
             t = i * interval
             value = self.generate_point(t)
             # Calculate timestamp offset from base_time
-            from datetime import timedelta
-
             timestamp = base_time + timedelta(seconds=t)
             result.append((timestamp, value))
         return result
