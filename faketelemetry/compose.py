@@ -136,8 +136,7 @@ class CompositeGenerator:
         """Return batch as list of dicts (DataFrame-ready)."""
         points = self.batch(num_samples, sampling_rate, start_time)
         return [
-            {"timestamp": ts.isoformat(), "value": val, "channel": self.name}
-            for ts, val in points
+            {"timestamp": ts.isoformat(), "value": val, "channel": self.name} for ts, val in points
         ]
 
     # ------------------------------------------------------------------
@@ -183,6 +182,7 @@ class CompositeGenerator:
 # ------------------------------------------------------------------
 # Convenience function
 # ------------------------------------------------------------------
+
 
 def compose(*generators: _Generatable, operation: str = "add") -> CompositeGenerator:
     """

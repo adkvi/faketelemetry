@@ -28,6 +28,7 @@ from typing import Dict, Iterator, List, Optional, Tuple
 # InfluxDB line protocol
 # ------------------------------------------------------------------
 
+
 def to_influxdb(
     data: List[Tuple[datetime, float]],
     measurement: str = "telemetry",
@@ -95,8 +96,7 @@ def to_influxdb_multi(
             ts = ts_raw
         epoch = int(ts.timestamp() * mult)
         fields = ",".join(
-            f"{k}={v}" for k, v in row.items()
-            if k != "timestamp" and isinstance(v, (int, float))
+            f"{k}={v}" for k, v in row.items() if k != "timestamp" and isinstance(v, (int, float))
         )
         if fields:
             lines.append(f"{measurement}{tag_str} {fields} {epoch}")
@@ -106,6 +106,7 @@ def to_influxdb_multi(
 # ------------------------------------------------------------------
 # MQTT JSON payloads
 # ------------------------------------------------------------------
+
 
 def to_mqtt_json(
     data: List[Tuple[datetime, float]],
@@ -150,6 +151,7 @@ def to_mqtt_json_multi(
 # ------------------------------------------------------------------
 # Prometheus exposition format
 # ------------------------------------------------------------------
+
 
 def to_prometheus(
     data: List[Tuple[datetime, float]],

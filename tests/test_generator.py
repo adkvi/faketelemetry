@@ -15,43 +15,31 @@ class TestTelemetryGenerator(unittest.TestCase):
     # ----- basic waveforms -----
 
     def test_sine_wave(self):
-        gen = TelemetryGenerator(
-            WaveformType.SINE, frequency=1.0, amplitude=2.0, offset=1.0
-        )
+        gen = TelemetryGenerator(WaveformType.SINE, frequency=1.0, amplitude=2.0, offset=1.0)
         self.assertAlmostEqual(gen.generate_point(0), 1.0)
         self.assertAlmostEqual(gen.generate_point(0.25), 3.0, places=1)
 
     def test_cosine_wave(self):
-        gen = TelemetryGenerator(
-            WaveformType.COSINE, frequency=1.0, amplitude=1.0, offset=0.0
-        )
+        gen = TelemetryGenerator(WaveformType.COSINE, frequency=1.0, amplitude=1.0, offset=0.0)
         self.assertAlmostEqual(gen.generate_point(0), 1.0)
 
     def test_square_wave(self):
-        gen = TelemetryGenerator(
-            WaveformType.SQUARE, frequency=1.0, amplitude=1.0, offset=0.0
-        )
+        gen = TelemetryGenerator(WaveformType.SQUARE, frequency=1.0, amplitude=1.0, offset=0.0)
         self.assertIn(gen.generate_point(0.1), [1.0, -1.0])
 
     def test_sawtooth_wave(self):
-        gen = TelemetryGenerator(
-            WaveformType.SAWTOOTH, frequency=1.0, amplitude=1.0, offset=0.0
-        )
+        gen = TelemetryGenerator(WaveformType.SAWTOOTH, frequency=1.0, amplitude=1.0, offset=0.0)
         self.assertAlmostEqual(gen.generate_point(0), 0.0)
 
     def test_triangle_wave(self):
-        gen = TelemetryGenerator(
-            WaveformType.TRIANGLE, frequency=1.0, amplitude=1.0, offset=0.0
-        )
+        gen = TelemetryGenerator(WaveformType.TRIANGLE, frequency=1.0, amplitude=1.0, offset=0.0)
         self.assertAlmostEqual(gen.generate_point(0), -1.0, places=1)
         self.assertAlmostEqual(gen.generate_point(0.25), 0.0, places=1)
         self.assertAlmostEqual(gen.generate_point(0.5), 1.0, places=1)
         self.assertAlmostEqual(gen.generate_point(0.75), 0.0, places=1)
 
     def test_pulse_wave(self):
-        gen = TelemetryGenerator(
-            WaveformType.PULSE, frequency=1.0, amplitude=1.0, offset=0.0
-        )
+        gen = TelemetryGenerator(WaveformType.PULSE, frequency=1.0, amplitude=1.0, offset=0.0)
         self.assertEqual(gen.generate_point(0), 1.0)
         self.assertEqual(gen.generate_point(0.6), 0.0)
         self.assertEqual(gen.generate_point(1.0), 1.0)
@@ -64,34 +52,26 @@ class TestTelemetryGenerator(unittest.TestCase):
     # ----- new waveforms -----
 
     def test_random_walk(self):
-        gen = TelemetryGenerator(
-            WaveformType.RANDOM_WALK, amplitude=1.0, seed=42
-        )
+        gen = TelemetryGenerator(WaveformType.RANDOM_WALK, amplitude=1.0, seed=42)
         v1 = gen.generate_point(0)
         v2 = gen.generate_point(0.1)
         # Walk should accumulate steps so values differ
         self.assertNotAlmostEqual(v1, v2)
 
     def test_step(self):
-        gen = TelemetryGenerator(
-            WaveformType.STEP, frequency=1.0, amplitude=5.0, offset=0.0
-        )
+        gen = TelemetryGenerator(WaveformType.STEP, frequency=1.0, amplitude=5.0, offset=0.0)
         self.assertAlmostEqual(gen.generate_point(0.5), 0.0)
         self.assertAlmostEqual(gen.generate_point(1.5), 5.0)
 
     def test_exponential_decay(self):
-        gen = TelemetryGenerator(
-            WaveformType.EXPONENTIAL_DECAY, frequency=1.0, amplitude=10.0
-        )
+        gen = TelemetryGenerator(WaveformType.EXPONENTIAL_DECAY, frequency=1.0, amplitude=10.0)
         v0 = gen.generate_point(0)
         v5 = gen.generate_point(5)
         self.assertAlmostEqual(v0, 10.0, places=1)
         self.assertTrue(v5 < v0)
 
     def test_chirp(self):
-        gen = TelemetryGenerator(
-            WaveformType.CHIRP, frequency=1.0, amplitude=1.0
-        )
+        gen = TelemetryGenerator(WaveformType.CHIRP, frequency=1.0, amplitude=1.0)
         vals = [gen.generate_point(t * 0.01) for t in range(100)]
         self.assertTrue(any(v > 0 for v in vals))
         self.assertTrue(any(v < 0 for v in vals))
@@ -108,27 +88,21 @@ class TestTelemetryGenerator(unittest.TestCase):
     # ----- duty cycle -----
 
     def test_duty_cycle_square(self):
-        gen = TelemetryGenerator(
-            WaveformType.SQUARE, frequency=1.0, amplitude=1.0, duty_cycle=0.25
-        )
+        gen = TelemetryGenerator(WaveformType.SQUARE, frequency=1.0, amplitude=1.0, duty_cycle=0.25)
         # First 25% of cycle should be high
         self.assertEqual(gen.generate_point(0.1), 1.0)
         # Last 75% should be low
         self.assertEqual(gen.generate_point(0.5), -1.0)
 
     def test_duty_cycle_pulse(self):
-        gen = TelemetryGenerator(
-            WaveformType.PULSE, frequency=1.0, amplitude=1.0, duty_cycle=0.8
-        )
+        gen = TelemetryGenerator(WaveformType.PULSE, frequency=1.0, amplitude=1.0, duty_cycle=0.8)
         self.assertEqual(gen.generate_point(0.5), 1.0)  # within 80%
         self.assertEqual(gen.generate_point(0.9), 0.0)  # outside 80%
 
     # ----- damping -----
 
     def test_damping(self):
-        gen = TelemetryGenerator(
-            WaveformType.SINE, amplitude=1.0, damping=1.0
-        )
+        gen = TelemetryGenerator(WaveformType.SINE, amplitude=1.0, damping=1.0)
         v0 = gen.generate_point(0.25)
         v5 = gen.generate_point(5.0)
         self.assertTrue(abs(v5) < abs(v0))
@@ -136,9 +110,7 @@ class TestTelemetryGenerator(unittest.TestCase):
     # ----- clamp -----
 
     def test_clamp(self):
-        gen = TelemetryGenerator(
-            WaveformType.SINE, amplitude=10.0, clamp_min=-2.0, clamp_max=2.0
-        )
+        gen = TelemetryGenerator(WaveformType.SINE, amplitude=10.0, clamp_min=-2.0, clamp_max=2.0)
         for t in [0.0, 0.1, 0.25, 0.5, 0.75]:
             v = gen.generate_point(t)
             self.assertGreaterEqual(v, -2.0)
@@ -245,10 +217,12 @@ class TestMultiChannelTelemetryGenerator(unittest.TestCase):
                 self.assertIsInstance(v[1], float)
 
     def test_batch(self):
-        multi = MultiChannelTelemetryGenerator({
-            "a": TelemetryGenerator(WaveformType.SINE),
-            "b": TelemetryGenerator(WaveformType.COSINE),
-        })
+        multi = MultiChannelTelemetryGenerator(
+            {
+                "a": TelemetryGenerator(WaveformType.SINE),
+                "b": TelemetryGenerator(WaveformType.COSINE),
+            }
+        )
         rows = multi.batch(num_samples=10, sampling_rate=10)
         self.assertEqual(len(rows), 10)
         self.assertIn("timestamp", rows[0])
@@ -256,10 +230,12 @@ class TestMultiChannelTelemetryGenerator(unittest.TestCase):
         self.assertIn("b", rows[0])
 
     def test_batch_arrays(self):
-        multi = MultiChannelTelemetryGenerator({
-            "x": TelemetryGenerator(WaveformType.SINE),
-            "y": TelemetryGenerator(WaveformType.COSINE),
-        })
+        multi = MultiChannelTelemetryGenerator(
+            {
+                "x": TelemetryGenerator(WaveformType.SINE),
+                "y": TelemetryGenerator(WaveformType.COSINE),
+            }
+        )
         arrays = multi.batch_arrays(num_samples=20, sampling_rate=10)
         self.assertEqual(len(arrays["x"]), 20)
         self.assertEqual(len(arrays["y"]), 20)

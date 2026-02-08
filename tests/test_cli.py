@@ -54,7 +54,9 @@ class TestGenerate(_CaptureMixin, unittest.TestCase):
         self.assertTrue(lines[0].startswith("telemetry "))
 
     def test_with_noise(self):
-        out = self._run(["generate", "-w", "sine", "-n", "5", "--noise-level", "0.5", "--seed", "42"])
+        out = self._run(
+            ["generate", "-w", "sine", "-n", "5", "--noise-level", "0.5", "--seed", "42"]
+        )
         lines = out.strip().split("\n")
         self.assertEqual(len(lines), 6)
 
@@ -65,11 +67,23 @@ class TestGenerate(_CaptureMixin, unittest.TestCase):
         self.assertNotIn("timestamp", lines[0])
 
     def test_waveform_params(self):
-        out = self._run([
-            "generate", "-w", "square",
-            "--freq", "2.0", "--amp", "5.0", "--offset", "10.0",
-            "--duty-cycle", "0.3", "-n", "3",
-        ])
+        out = self._run(
+            [
+                "generate",
+                "-w",
+                "square",
+                "--freq",
+                "2.0",
+                "--amp",
+                "5.0",
+                "--offset",
+                "10.0",
+                "--duty-cycle",
+                "0.3",
+                "-n",
+                "3",
+            ]
+        )
         lines = out.strip().split("\n")
         self.assertEqual(len(lines), 4)
 

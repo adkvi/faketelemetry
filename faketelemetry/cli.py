@@ -33,7 +33,10 @@ _PRESETS: Dict[str, Tuple[Any, str]] = {
     "temperature": (SensorPreset.temperature, "~22 C, slow sine + Gaussian noise"),
     "pressure": (SensorPreset.pressure, "~1013 hPa, slow sine + Gaussian noise"),
     "humidity": (SensorPreset.humidity, "0-100 %, sine + noise, clamped"),
-    "battery_voltage": (SensorPreset.battery_voltage, "4.2 V exponential decay, clamped [2.8, 4.2]"),
+    "battery_voltage": (
+        SensorPreset.battery_voltage,
+        "4.2 V exponential decay, clamped [2.8, 4.2]",
+    ),
     "rpm": (SensorPreset.rpm, "~800 RPM idle, triangle + noise, clamped >= 0"),
     "cpu_usage": (SensorPreset.cpu_usage, "0-100 %, sawtooth + noise"),
     "network_latency": (SensorPreset.network_latency, "~25 ms, sine + uniform noise, clamped >= 1"),
@@ -56,25 +59,36 @@ _PRESETS: Dict[str, Tuple[Any, str]] = {
 # Argument parser
 # ------------------------------------------------------------------
 
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="faketelemetry",
         description="Generate realistic fake telemetry data from the command line.",
     )
-    parser.add_argument(
-        "--version", action="version", version=f"faketelemetry {__version__}"
-    )
+    parser.add_argument("--version", action="version", version=f"faketelemetry {__version__}")
     sub = parser.add_subparsers(dest="command", help="Available commands")
 
     # --- generate ---
     p_gen = sub.add_parser("generate", help="Generate data from a waveform")
-    p_gen.add_argument("--waveform", "-w", required=True, choices=[w.value for w in WaveformType if w != WaveformType.CUSTOM], help="Waveform type")
+    p_gen.add_argument(
+        "--waveform",
+        "-w",
+        required=True,
+        choices=[w.value for w in WaveformType if w != WaveformType.CUSTOM],
+        help="Waveform type",
+    )
     p_gen.add_argument("--freq", type=float, default=1.0, help="Frequency in Hz (default: 1.0)")
     p_gen.add_argument("--amp", type=float, default=1.0, help="Amplitude (default: 1.0)")
     p_gen.add_argument("--offset", type=float, default=0.0, help="Vertical offset (default: 0.0)")
-    p_gen.add_argument("--phase", type=float, default=0.0, help="Phase offset in radians (default: 0.0)")
-    p_gen.add_argument("--duty-cycle", type=float, default=0.5, help="Duty cycle for square/pulse (default: 0.5)")
-    p_gen.add_argument("--damping", type=float, default=0.0, help="Exponential damping coefficient (default: 0.0)")
+    p_gen.add_argument(
+        "--phase", type=float, default=0.0, help="Phase offset in radians (default: 0.0)"
+    )
+    p_gen.add_argument(
+        "--duty-cycle", type=float, default=0.5, help="Duty cycle for square/pulse (default: 0.5)"
+    )
+    p_gen.add_argument(
+        "--damping", type=float, default=0.0, help="Exponential damping coefficient (default: 0.0)"
+    )
     p_gen.add_argument("--clamp-min", type=float, default=None, help="Minimum output clamp")
     p_gen.add_argument("--clamp-max", type=float, default=None, help="Maximum output clamp")
     _add_common_args(p_gen)
@@ -85,19 +99,34 @@ def build_parser() -> argparse.ArgumentParser:
     _add_common_args(p_pre)
 
     # --- multi ---
-    p_multi = sub.add_parser("multi", help="Generate multi-channel data from comma-separated presets")
-    p_multi.add_argument("presets", help="Comma-separated preset names (e.g. temperature,pressure,cpu_usage)")
+    p_multi = sub.add_parser(
+        "multi", help="Generate multi-channel data from comma-separated presets"
+    )
+    p_multi.add_argument(
+        "presets", help="Comma-separated preset names (e.g. temperature,pressure,cpu_usage)"
+    )
     _add_common_args(p_multi)
 
     # --- stream ---
     p_stream = sub.add_parser("stream", help="Stream data to stdout in real-time")
     p_stream_src = p_stream.add_mutually_exclusive_group(required=True)
     p_stream_src.add_argument("--preset", choices=list(_PRESETS.keys()), help="Preset name")
-    p_stream_src.add_argument("--waveform", "-w", choices=[w.value for w in WaveformType if w != WaveformType.CUSTOM], help="Waveform type")
-    p_stream.add_argument("--rate", type=float, default=1.0, help="Sampling rate in Hz (default: 1.0)")
-    p_stream.add_argument("--duration", type=float, default=None, help="Duration in seconds (default: infinite)")
+    p_stream_src.add_argument(
+        "--waveform",
+        "-w",
+        choices=[w.value for w in WaveformType if w != WaveformType.CUSTOM],
+        help="Waveform type",
+    )
+    p_stream.add_argument(
+        "--rate", type=float, default=1.0, help="Sampling rate in Hz (default: 1.0)"
+    )
+    p_stream.add_argument(
+        "--duration", type=float, default=None, help="Duration in seconds (default: infinite)"
+    )
     p_stream.add_argument("--seed", type=int, default=None, help="Random seed")
-    p_stream.add_argument("--noise-level", type=float, default=0.0, help="Gaussian noise level (default: 0.0)")
+    p_stream.add_argument(
+        "--noise-level", type=float, default=0.0, help="Gaussian noise level (default: 0.0)"
+    )
 
     # --- from-config ---
     p_cfg = sub.add_parser("from-config", help="Generate data from a saved JSON config file")
@@ -105,7 +134,9 @@ def build_parser() -> argparse.ArgumentParser:
     _add_common_args(p_cfg)
 
     # --- list ---
-    p_list = sub.add_parser("list", help="List available presets, waveforms, noise types, or anomaly types")
+    p_list = sub.add_parser(
+        "list", help="List available presets, waveforms, noise types, or anomaly types"
+    )
     p_list.add_argument(
         "category",
         choices=["presets", "waveforms", "noise", "anomalies"],
@@ -116,9 +147,18 @@ def build_parser() -> argparse.ArgumentParser:
     p_desc = sub.add_parser("describe", help="Generate data and print summary statistics")
     p_desc_src = p_desc.add_mutually_exclusive_group(required=True)
     p_desc_src.add_argument("--preset", choices=list(_PRESETS.keys()), help="Preset name")
-    p_desc_src.add_argument("--waveform", "-w", choices=[w.value for w in WaveformType if w != WaveformType.CUSTOM], help="Waveform type")
-    p_desc.add_argument("-n", "--samples", type=int, default=1000, help="Number of samples (default: 1000)")
-    p_desc.add_argument("--rate", type=float, default=10.0, help="Sampling rate in Hz (default: 10.0)")
+    p_desc_src.add_argument(
+        "--waveform",
+        "-w",
+        choices=[w.value for w in WaveformType if w != WaveformType.CUSTOM],
+        help="Waveform type",
+    )
+    p_desc.add_argument(
+        "-n", "--samples", type=int, default=1000, help="Number of samples (default: 1000)"
+    )
+    p_desc.add_argument(
+        "--rate", type=float, default=10.0, help="Sampling rate in Hz (default: 10.0)"
+    )
     p_desc.add_argument("--seed", type=int, default=None, help="Random seed")
 
     return parser
@@ -129,20 +169,24 @@ def _add_common_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("-n", "--samples", type=int, default=10, help="Number of samples (default: 10)")
     p.add_argument("--rate", type=float, default=1.0, help="Sampling rate in Hz (default: 1.0)")
     p.add_argument(
-        "--format", "-f",
+        "--format",
+        "-f",
         choices=["table", "csv", "json", "ndjson", "influxdb"],
         default="table",
         help="Output format (default: table)",
     )
     p.add_argument("-o", "--output", default=None, help="Output file path (default: stdout)")
     p.add_argument("--seed", type=int, default=None, help="Random seed")
-    p.add_argument("--noise-level", type=float, default=0.0, help="Add Gaussian noise (default: 0.0)")
+    p.add_argument(
+        "--noise-level", type=float, default=0.0, help="Add Gaussian noise (default: 0.0)"
+    )
     p.add_argument("--no-header", action="store_true", help="Omit header row in table/csv output")
 
 
 # ------------------------------------------------------------------
 # Subcommand handlers
 # ------------------------------------------------------------------
+
 
 def cmd_generate(args: argparse.Namespace) -> None:
     noise = _make_noise(args.noise_level, args.seed) if args.noise_level > 0 else None
@@ -271,9 +315,8 @@ def cmd_describe(args: argparse.Namespace) -> None:
 # Output helpers
 # ------------------------------------------------------------------
 
-def _output_single(
-    data: List[Tuple[datetime, float]], args: argparse.Namespace
-) -> None:
+
+def _output_single(data: List[Tuple[datetime, float]], args: argparse.Namespace) -> None:
     fmt = args.format
     text: Optional[str] = None
 
@@ -301,9 +344,7 @@ def _output_single(
         sys.stdout.write(text)
 
 
-def _output_multi(
-    rows: List[Dict[str, Any]], args: argparse.Namespace
-) -> None:
+def _output_multi(rows: List[Dict[str, Any]], args: argparse.Namespace) -> None:
     fmt = args.format
     text: Optional[str] = None
 
@@ -331,9 +372,7 @@ def _output_multi(
         sys.stdout.write(text)
 
 
-def _format_table(
-    data: List[Tuple[datetime, float]], header: bool = True
-) -> str:
+def _format_table(data: List[Tuple[datetime, float]], header: bool = True) -> str:
     lines: List[str] = []
     if header:
         lines.append(f"{'timestamp':<32s} {'value':>14s}")
@@ -342,9 +381,7 @@ def _format_table(
     return "\n".join(lines) + "\n"
 
 
-def _format_table_multi(
-    rows: List[Dict[str, Any]], header: bool = True
-) -> str:
+def _format_table_multi(rows: List[Dict[str, Any]], header: bool = True) -> str:
     if not rows:
         return ""
     keys = list(rows[0].keys())
@@ -373,6 +410,7 @@ def _format_table_multi(
 # Misc helpers
 # ------------------------------------------------------------------
 
+
 def _make_noise(level: float, seed: Optional[int]) -> NoiseInjector:
     return NoiseInjector(noise_level=level, seed=seed)
 
@@ -385,6 +423,7 @@ def _error(msg: str) -> None:
 # ------------------------------------------------------------------
 # Entry point
 # ------------------------------------------------------------------
+
 
 def main(argv: Optional[List[str]] = None) -> None:
     parser = build_parser()

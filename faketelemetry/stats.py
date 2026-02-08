@@ -85,6 +85,7 @@ def describe_multi(
 # Internal helpers (stdlib only -- no numpy)
 # ------------------------------------------------------------------
 
+
 def _summarise(
     values: List[float],
     start: Optional[datetime],

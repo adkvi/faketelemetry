@@ -63,10 +63,12 @@ class TestExporters(unittest.TestCase):
     # ----- Multi-channel CSV -----
 
     def test_to_multichannel_csv(self):
-        multi = MultiChannelTelemetryGenerator({
-            "a": TelemetryGenerator(WaveformType.SINE),
-            "b": TelemetryGenerator(WaveformType.COSINE),
-        })
+        multi = MultiChannelTelemetryGenerator(
+            {
+                "a": TelemetryGenerator(WaveformType.SINE),
+                "b": TelemetryGenerator(WaveformType.COSINE),
+            }
+        )
         rows = multi.batch(num_samples=5, sampling_rate=10)
         result = to_multichannel_csv(rows)
         lines = result.strip().split("\n")

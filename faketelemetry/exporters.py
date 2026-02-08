@@ -100,9 +100,7 @@ def to_ndjson(
 
     :returns: NDJSON string when *path_or_file* is None, else None.
     """
-    lines = [
-        json.dumps({"timestamp": ts.isoformat(), "value": val}) for ts, val in data
-    ]
+    lines = [json.dumps({"timestamp": ts.isoformat(), "value": val}) for ts, val in data]
     text = "\n".join(lines) + "\n"
 
     if path_or_file is None:

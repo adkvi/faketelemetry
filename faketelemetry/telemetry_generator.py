@@ -94,9 +94,7 @@ class TelemetryGenerator:
         if damping < 0:
             raise ValueError("damping must be non-negative.")
         if waveform == WaveformType.CUSTOM and not callable(custom_func):
-            raise ValueError(
-                "A callable custom_func must be provided for CUSTOM waveform."
-            )
+            raise ValueError("A callable custom_func must be provided for CUSTOM waveform.")
         if clamp_min is not None and clamp_max is not None and clamp_min > clamp_max:
             raise ValueError("clamp_min must be <= clamp_max.")
 
@@ -141,10 +139,7 @@ class TelemetryGenerator:
         elif wf == WaveformType.SAWTOOTH:
             raw = 2 * (t * self.frequency - math.floor(0.5 + t * self.frequency))
         elif wf == WaveformType.TRIANGLE:
-            raw = (
-                2 * abs(2 * (t * self.frequency - math.floor(t * self.frequency + 0.5)))
-                - 1
-            )
+            raw = 2 * abs(2 * (t * self.frequency - math.floor(t * self.frequency + 0.5))) - 1
         elif wf == WaveformType.PULSE:
             cycle_pos = (t * self.frequency) % 1
             raw = 1.0 if cycle_pos < self.duty_cycle else 0.0
@@ -287,8 +282,7 @@ class TelemetryGenerator:
         """
         points = self.batch(num_samples, sampling_rate, start_time)
         return [
-            {"timestamp": ts.isoformat(), "value": val, "channel": self.name}
-            for ts, val in points
+            {"timestamp": ts.isoformat(), "value": val, "channel": self.name} for ts, val in points
         ]
 
     # ------------------------------------------------------------------
@@ -403,30 +397,37 @@ class TelemetryGenerator:
 
     def __add__(self, other: Any) -> "CompositeGenerator":
         from .compose import CompositeGenerator
+
         return CompositeGenerator(self, other, "add")
 
     def __radd__(self, other: Any) -> "CompositeGenerator":
         from .compose import CompositeGenerator
+
         return CompositeGenerator(other, self, "add")
 
     def __sub__(self, other: Any) -> "CompositeGenerator":
         from .compose import CompositeGenerator
+
         return CompositeGenerator(self, other, "sub")
 
     def __rsub__(self, other: Any) -> "CompositeGenerator":
         from .compose import CompositeGenerator
+
         return CompositeGenerator(other, self, "sub")
 
     def __mul__(self, other: Any) -> "CompositeGenerator":
         from .compose import CompositeGenerator
+
         return CompositeGenerator(self, other, "mul")
 
     def __rmul__(self, other: Any) -> "CompositeGenerator":
         from .compose import CompositeGenerator
+
         return CompositeGenerator(other, self, "mul")
 
     def __neg__(self) -> "CompositeGenerator":
         from .compose import CompositeGenerator
+
         return CompositeGenerator(-1, self, "mul")
 
     # ------------------------------------------------------------------

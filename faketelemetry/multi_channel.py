@@ -42,9 +42,7 @@ class MultiChannelTelemetryGenerator:
         if isinstance(generators, dict):
             self._generators: Dict[str, TelemetryGenerator] = generators
         elif isinstance(generators, list):
-            self._generators = {
-                (gen.name or str(idx)): gen for idx, gen in enumerate(generators)
-            }
+            self._generators = {(gen.name or str(idx)): gen for idx, gen in enumerate(generators)}
         else:
             raise TypeError("generators must be a list or dict of TelemetryGenerator.")
 

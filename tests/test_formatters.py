@@ -48,10 +48,12 @@ class TestInfluxDB(unittest.TestCase):
             to_influxdb(self.data, precision="invalid")
 
     def test_multi(self):
-        multi = MultiChannelTelemetryGenerator({
-            "a": TelemetryGenerator(WaveformType.SINE),
-            "b": TelemetryGenerator(WaveformType.COSINE),
-        })
+        multi = MultiChannelTelemetryGenerator(
+            {
+                "a": TelemetryGenerator(WaveformType.SINE),
+                "b": TelemetryGenerator(WaveformType.COSINE),
+            }
+        )
         rows = multi.batch(3, sampling_rate=1)
         lines = to_influxdb_multi(rows, measurement="multi_test")
         self.assertEqual(len(lines), 3)
@@ -84,9 +86,11 @@ class TestMQTT(unittest.TestCase):
         self.assertEqual(obj["unit"], "C")
 
     def test_multi(self):
-        multi = MultiChannelTelemetryGenerator({
-            "x": TelemetryGenerator(WaveformType.SINE),
-        })
+        multi = MultiChannelTelemetryGenerator(
+            {
+                "x": TelemetryGenerator(WaveformType.SINE),
+            }
+        )
         rows = multi.batch(2, sampling_rate=1)
         payloads = to_mqtt_json_multi(rows, device_id="dev-01")
         self.assertEqual(len(payloads), 2)

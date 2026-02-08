@@ -67,10 +67,12 @@ class TestDescribeValues(unittest.TestCase):
 
 class TestDescribeMulti(unittest.TestCase):
     def test_basic(self):
-        multi = MultiChannelTelemetryGenerator({
-            "a": TelemetryGenerator(WaveformType.SINE, amplitude=1.0),
-            "b": TelemetryGenerator(WaveformType.COSINE, amplitude=2.0),
-        })
+        multi = MultiChannelTelemetryGenerator(
+            {
+                "a": TelemetryGenerator(WaveformType.SINE, amplitude=1.0),
+                "b": TelemetryGenerator(WaveformType.COSINE, amplitude=2.0),
+            }
+        )
         rows = multi.batch(100, sampling_rate=10)
         stats = describe_multi(rows)
 
