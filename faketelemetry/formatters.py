@@ -23,7 +23,6 @@ import json
 from datetime import datetime
 from typing import Dict, Iterator, List, Optional, Tuple
 
-
 # ------------------------------------------------------------------
 # InfluxDB line protocol
 # ------------------------------------------------------------------
