@@ -56,7 +56,7 @@ Changelog = "https://github.com/adkvi/faketelemetry/blob/main/CHANGELOG.md"
 dev = [
     "pytest",
     "mypy",
-    "black>=26",
+    "black>=24,<26",
 ]
 
 [tool.setuptools.packages.find]
