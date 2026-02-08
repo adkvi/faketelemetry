@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2026-02-08
+### Fixed
+- Fix logo image on PyPI by using absolute URL in README
+- Fix mypy errors (python_version, type narrowing)
+- Fix Black formatting and pin version to `>=24,<26` for Python 3.9 compatibility
+- Fix Windows CSV double-newline bug when writing to file
+- Fix seed reproducibility test (compare values, not timestamps)
+
 ## [0.4.0] - 2026-02-08
 ### Added
 - **Command-line interface**: full CLI via `faketelemetry` command or `python -m faketelemetry`

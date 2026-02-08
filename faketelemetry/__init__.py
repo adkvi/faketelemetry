@@ -20,7 +20,7 @@ from .formatters import (
 )
 from .stats import describe, describe_values, describe_multi
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 __all__ = [
     # Core
