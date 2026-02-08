@@ -323,9 +323,9 @@ def _output_single(data: List[Tuple[datetime, float]], args: argparse.Namespace)
     if fmt == "table":
         text = _format_table(data, header=not args.no_header)
     elif fmt == "csv":
-        text = to_csv(data)
-        if args.no_header:
-            text = "\n".join(text.split("\n")[1:])
+        csv_text = to_csv(data)
+        if csv_text is not None:
+            text = "\n".join(csv_text.split("\n")[1:]) if args.no_header else csv_text
     elif fmt == "json":
         text = to_json(data)
     elif fmt == "ndjson":
@@ -351,9 +351,9 @@ def _output_multi(rows: List[Dict[str, Any]], args: argparse.Namespace) -> None:
     if fmt == "table":
         text = _format_table_multi(rows, header=not args.no_header)
     elif fmt == "csv":
-        text = to_multichannel_csv(rows)
-        if args.no_header:
-            text = "\n".join(text.split("\n")[1:])
+        csv_text = to_multichannel_csv(rows)
+        if csv_text is not None:
+            text = "\n".join(csv_text.split("\n")[1:]) if args.no_header else csv_text
     elif fmt == "json":
         text = json.dumps(rows, indent=2) + "\n"
     elif fmt == "ndjson":

@@ -69,7 +69,7 @@ class CompositeGenerator:
         """Evaluate an operand at time *t*."""
         if isinstance(operand, (int, float)):
             return float(operand)
-        return operand.generate_point(t)
+        return float(operand.generate_point(t))
 
     def generate_point(self, t: float) -> float:
         """Generate the composite signal value at time *t*."""
