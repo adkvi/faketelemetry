@@ -8,7 +8,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -20,9 +19,11 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
 # Installer logs
 pip-log.txt
@@ -38,34 +39,37 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+*.py,cover
 .hypothesis/
 .pytest_cache/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
 
-# pyenv
-.python-version
-
-# VS Code
+# IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# mypy
+# Type checkers
 .mypy_cache/
 .dmypy.json
-
-# Pyre type checker
 .pyre/
+.pytype/
 
-# Windows
+# Jupyter
+.ipynb_checkpoints
+
+# OS
+.DS_Store
 Thumbs.db
 Desktop.ini
 
-# Mac
-.DS_Store
-
-# Local env
-.env
-.venv
-ENV/
-venv/
+# Build artifacts
+*.whl

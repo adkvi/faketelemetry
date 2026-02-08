@@ -1,3 +1,75 @@
 [build-system]
 requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "faketelemetry"
+version = "0.4.0"
+description = "Realistic fake telemetry stream generator for testing, simulation & IoT development"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.7"
+authors = [
+    {name = "Adam Billekvist", email = "adam.billeqvist@gmail.com"},
+]
+keywords = [
+    "telemetry",
+    "signal",
+    "generator",
+    "iot",
+    "testing",
+    "simulation",
+    "waveform",
+    "sensor",
+    "anomaly",
+    "noise",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+
+[project.scripts]
+faketelemetry = "faketelemetry.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/adkvi/faketelemetry"
+Documentation = "https://github.com/adkvi/faketelemetry#readme"
+Repository = "https://github.com/adkvi/faketelemetry"
+Issues = "https://github.com/adkvi/faketelemetry/issues"
+Changelog = "https://github.com/adkvi/faketelemetry/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "black",
+]
+
+[tool.setuptools.packages.find]
+include = ["faketelemetry*"]
+
+[tool.black]
+line-length = 100
+target-version = ["py37"]
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
